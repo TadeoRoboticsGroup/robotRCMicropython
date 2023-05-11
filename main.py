@@ -32,12 +32,13 @@ sensor2 = Pin(2, Pin.IN, Pin.PULL_DOWN) #derecha
 #Servomotores
 s1 = Servo(16)
 s2 = Servo(17)
+s3 = Servo(15)
 
 #Salidas pines puente H
-M1A = Pin(28)   #motorDerechaGiroAdelnate
-M1B = Pin(27)   #motorDerechaGiroAtras
-M2A = Pin(15)   #motorIzquierdaGiroAdelante
-M2B = Pin(14)   #motorIzquierdaGiroAtras
+M1A = Pin(18)   #motorDerechaGiroAdelnate
+M1B = Pin(19)   #motorDerechaGiroAtras
+M2A = Pin(20)   #motorIzquierdaGiroAdelante
+M2B = Pin(21)   #motorIzquierdaGiroAtras
 
 pwmDerechadelante       = PWM(M1A)  #PWM_motorDerechaGiroAdelnate
 pwmDerechatras          = PWM(M1B)  #PWM_motorDerechaGiroAtras
@@ -56,6 +57,7 @@ modo=True #Control RC
 dirServo = 'l'
 posSerX = 90
 posSerY = 90
+posSerZ = 90
 angulos = 1
 
 #Funcion map para conversion Porcentaje a PWM
@@ -73,6 +75,8 @@ def servo_Angle(angle, idServo):
         s1.goto(round(Map(angle,0,180,0,1024)))
     if idServo == 'y':
         s2.goto(round(Map(angle,0,180,0,1024)))
+    if idServo == 'z':
+        s3.goto(round(Map(angle,0,180,0,1024)))
     
 #Funcion que controla los puente H
 def move(m1a, m1b, m2a, m2b):
@@ -105,7 +109,7 @@ def detenerme(vel):
 
 
 def autonomo():
-    print("autnomo")
+    print("autonomo")
     s1_estado = sensor1.value() #izquierda
     s2_estado = sensor2.value() #derecha  
     #Validaciones modo autonomo
@@ -139,7 +143,8 @@ servo_Angle(posSerX, 'x')
 utime.sleep(0.5)
 servo_Angle(posSerY, 'y')
 utime.sleep(0.5)
-
+servo_Angle(posSerZ, 'z')
+utime.sleep(0.5)
 #Bucle infinito
 while True:
     
@@ -213,12 +218,21 @@ while True:
         #Pausa el movimiento de los servos
         if modo == True and command == b'l':
             dirServo = 'l'
+        #MOVIMIENTO DEL LASER
+        #Arriba
+        if modo == True and command == b'p':
+            dirServo = 'p'
+        #Abajo
+        if modo == True and command == b'q':
+            dirServo = 'q'
         #Pone los servomotores en el origen
         if modo == True and command == b'o':
             dirServo = 'l'
             servo_Angle(90, 'x')
             utime.sleep(0.2)
             servo_Angle(90, 'y')
+            utime.sleep(0.2)
+            servo_Angle(90, 'z')
             utime.sleep(0.2)
             
     if dirServo == 'h':
@@ -256,6 +270,25 @@ while True:
             posSerX = posSerX - angulos
         servo_Angle(posSerX, 'x')
         utime.sleep(0.001)
+    if dirServo == 'p':
+        if posSerZ < 0:
+            posSerX = 0
+        elif posSerZ > 180:
+            posSerZ =180
+        else:
+            posSerZ = posSerZ + angulos
+        servo_Angle(posSerZ, 'z')
+        utime.sleep(0.001)
+    if dirServo == 'q':
+        if posSerZ < 0:
+            posSerX = 0
+        elif posSerZ > 180:
+            posSerZ =180
+        else:
+            posSerZ = posSerZ - angulos
+        servo_Angle(posSerZ, 'z')
+        utime.sleep(0.001)
+
          
     if modo == False:
         autonomo()
