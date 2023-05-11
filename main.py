@@ -154,7 +154,6 @@ while True:
         print("Esto llega del celular", command)
         print("pos Y", posSerY)
         print("pos X", posSerX)
-
         
         #Adecuamos el modo de acuerdo a la entrada desde la interfaz    
         if command == b'z':
@@ -196,6 +195,7 @@ while True:
             velocidad = Map(40, inMin, inMax, outMin, outMax)
             derecha(velocidad)
             utime.sleep(0.1)
+
             
         if modo == True and command == b'g':
             print("parar")
@@ -270,18 +270,20 @@ while True:
             posSerX = posSerX - angulos
         servo_Angle(posSerX, 'x')
         utime.sleep(0.001)
+        
     if dirServo == 'p':
         if posSerZ < 0:
-            posSerX = 0
+            posSerZ = 0
         elif posSerZ > 180:
             posSerZ =180
         else:
             posSerZ = posSerZ + angulos
         servo_Angle(posSerZ, 'z')
         utime.sleep(0.001)
+        
     if dirServo == 'q':
         if posSerZ < 0:
-            posSerX = 0
+            posSerZ = 0
         elif posSerZ > 180:
             posSerZ =180
         else:
@@ -295,3 +297,4 @@ while True:
         utime.sleep(0.05)
     
     utime.sleep(0.01)
+    
