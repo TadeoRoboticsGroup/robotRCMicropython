@@ -56,7 +56,7 @@ modo=True #Control RC
 dirServo = 'l'
 posSerX = 90
 posSerY = 90
-angulos = 3
+angulos = 1
 
 #Funcion map para conversion Porcentaje a PWM
 def Map(x, in_min, in_max, out_min, out_max):
@@ -147,6 +147,9 @@ while True:
     if uart.any():
         command = uart.readline()
         print("Esto llega del celular", command)
+        print("pos Y", posSerY)
+        print("pos X", posSerX)
+
         
         #Adecuamos el modo de acuerdo a la entrada desde la interfaz    
         if command == b'z':
@@ -219,12 +222,12 @@ while True:
             utime.sleep(0.2)
             
     if dirServo == 'h':
-        if posSerY > 180:
-            posSerY = 170
+        if posSerY > 171:
+            posSerY = 171
         else:
             posSerY = posSerY + angulos
         servo_Angle(posSerY, 'y')
-        utime.sleep(0.01)
+        utime.sleep(0.001)
          
     if dirServo == 'i':
         if posSerY < 30:
@@ -232,7 +235,7 @@ while True:
         else:
             posSerY = posSerY - angulos
         servo_Angle(posSerY, 'y')
-        utime.sleep(0.01)
+        utime.sleep(0.001)
          
     if dirServo == 'j':
         if posSerX < 0:
@@ -240,9 +243,9 @@ while True:
         elif posSerX > 180:
             posSerX =180
         else:
-            posSerX = posSerX - angulos
+            posSerX = posSerX + angulos
         servo_Angle(posSerX, 'x')
-        utime.sleep(0.01)
+        utime.sleep(0.001)
 
     if dirServo == 'k':
         if posSerX < 0:
@@ -250,9 +253,9 @@ while True:
         elif posSerX > 180:
             posSerX =180
         else:
-            posSerX = posSerX + angulos
+            posSerX = posSerX - angulos
         servo_Angle(posSerX, 'x')
-        utime.sleep(0.01)
+        utime.sleep(0.001)
          
     if modo == False:
         autonomo()
