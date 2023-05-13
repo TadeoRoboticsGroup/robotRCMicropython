@@ -27,7 +27,7 @@ uart = UART(1,9600)
 
 #Entradas digitales sensores
 sensor1 = Pin(0, Pin.IN, Pin.PULL_DOWN) #izquierda
-sensor2 = Pin(2, Pin.IN, Pin.PULL_DOWN) #derecha
+sensor2 = Pin(1, Pin.IN, Pin.PULL_DOWN) #derecha
 
 #Servomotores
 s1 = Servo(16)
@@ -116,7 +116,9 @@ def detenerme(vel):
 def autonomo():
     print("autonomo")
     s1_estado = sensor1.value() #izquierda
-    s2_estado = sensor2.value() #derecha  
+    s2_estado = sensor2.value() #derecha
+    print("s1 ",s1_estado)
+    print("s2 ",s2_estado)
     #Validaciones modo autonomo
     if modo == False and s1_estado==1 and s2_estado==0:
         print("S1")
